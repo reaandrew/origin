@@ -1,0 +1,9 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: ubuntu
+    steps:
+      - checkout
+      - sudo apt-get install -y docker make build-essential 
+      - make build
