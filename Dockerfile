@@ -1,6 +1,5 @@
 FROM ubuntu
 
-ADD scripts /root/scripts
 ADD files /root/files
 
 RUN ln -sf /root/scripts /scripts
