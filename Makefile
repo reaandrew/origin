@@ -8,6 +8,6 @@ build:
 
 .PHONY: publish
 publish:
-	cat ~/.ssh/GITHUB_TOKEN | docker login docker.pkg.github.com -u reaandrew --password-stdin
+	echo ${CI_TOKEN} | docker login docker.pkg.github.com -u reaandrew --password-stdin
 	docker tag $(IMAGE_ID) docker.pkg.github.com/reaandrew/origin/$(IMAGE_NAME):$(VERSION)
 	docker push docker.pkg.github.com/reaandrew/origin/$(IMAGE_NAME):$(VERSION)
