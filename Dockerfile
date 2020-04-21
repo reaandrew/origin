@@ -47,15 +47,51 @@ RUN cd /root/vim && make install
 
 WORKDIR /root/
 
-# Install ZSH
-RUN apt install -y zsh
-RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-RUN mv /root/.zshrc.pre-oh-my-zsh /root/.zshrc
-RUN chsh -s $(which zsh)
+ENV TERM xterm
+ENV ZSH_THEME agnoster
 
+ARG USER_NAME="docker"
+ARG USER_PASSWORD="docker"
 
-# Install Python Tools
-RUN apt-get install -y python3-pip
-RUN pip3 install --upgrade -r /root/files/requirements.txt
+ENV USER_NAME $USER_NAME
+ENV USER_PASSWORD $USER_PASSWORD
+ENV CONTAINER_IMAGE_VER=v1.0.0
 
-CMD ["/bin/zsh"]
+RUN echo $USER_NAME
+RUN echo $USER_PASSWORD
+RUN echo $CONTAINER_IMAGE_VER
+
+# install the tooks i wish to use
+RUN apt-get update && \
+  apt-get install -y sudo \
+  curl \
+  git-core \
+  gnupg \
+  linuxbrew-wrapper \
+  locales \
+  nodejs \
+  zsh \
+  wget \
+  npm \
+  fonts-powerline \
+  # set up locale
+  && locale-gen en_US.UTF-8 \
+  # add a user (--disabled-password: the user won't be able to use the account until the password is set)
+  && adduser --quiet --disabled-password --shell /bin/zsh --home /home/$USER_NAME --gecos "User" $USER_NAME \
+  # update the password
+  && echo "${USER_NAME}:${USER_PASSWORD}" | chpasswd && usermod -aG sudo $USER_NAME
+
+  
+  # the user we're applying this too (otherwise it most likely install for root)
+  USER $USER_NAME
+  # terminal colors with xterm
+  ENV TERM xterm
+  # set the zsh theme
+  ENV ZSH_THEME agnoster
+
+  # run the installation script  
+  RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
+
+  # start zsh
+  CMD [ "zsh" ]
+
