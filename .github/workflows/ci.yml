@@ -27,3 +27,5 @@ jobs:
     # Runs a single command using the runners shell
     - name: Run publish
       run: make publish
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
