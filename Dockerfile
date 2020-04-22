@@ -1,11 +1,8 @@
-FROM ubuntu
+FROM ubuntu as builder
 
-ADD files /root/files
-
-RUN ln -sf /root/scripts /scripts
-RUN ln -sf /root/files/.zshrc /root/.zshrc
-
-RUN mkdir -p /root/.ssh
+ARG USER_NAME="docker"
+ARG USER_PASSWORD="docker"
+ARG GO_VERSION="1.14.2"
 
 WORKDIR /root
 
@@ -41,16 +38,13 @@ RUN ./configure --with-features=huge \
   --enable-gui=gtk2 \
   --enable-cscope \
   --prefix=/usr
-RUN cd /root/vim && make VIMRUNTIMEDIR=/usr/share/vim/vim74
+RUN cd /root/vim && make VIMRUNTIMEDIR=/usr/share/vim/vim82
 RUN cd /root/vim && make install
 
 WORKDIR /root/
 
 ENV TERM xterm
 ENV ZSH_THEME agnoster
-
-ARG USER_NAME="docker"
-ARG USER_PASSWORD="docker"
 
 ENV USER_NAME $USER_NAME
 ENV USER_PASSWORD $USER_PASSWORD
@@ -63,6 +57,7 @@ RUN echo $CONTAINER_IMAGE_VER
 # install the tooks i wish to use
 RUN apt-get update && \
   apt-get install -y sudo \
+  cmake \
   curl \
   git-core \
   gnupg \
@@ -73,6 +68,8 @@ RUN apt-get update && \
   wget \
   npm \
   fonts-powerline \
+  build-essential \
+  python3-dev \
   # set up locale
   && locale-gen en_US.UTF-8 \
   # add a user (--disabled-password: the user won't be able to use the account until the password is set)
@@ -80,17 +77,45 @@ RUN apt-get update && \
   # update the password
   && echo "${USER_NAME}:${USER_PASSWORD}" | chpasswd && usermod -aG sudo $USER_NAME
 
+
+# Install GOLANG
+RUN rm -rf /usr/local/go && \
+  curl -LO "https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz" && \
+  tar -C /usr/local -xzf "go${GO_VERSION}.linux-amd64.tar.gz" && \
+  rm "go${GO_VERSION}.linux-amd64.tar.gz" && \
+  ln -s /usr/local/go/bin/go /usr/bin/go
   
-  # the user we're applying this too (otherwise it most likely install for root)
-  USER $USER_NAME
-  # terminal colors with xterm
-  ENV TERM xterm
-  # set the zsh theme
-  ENV ZSH_THEME agnoster
 
-  # run the installation script  
-  RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
+  
+ADD ./files/.vimrc /home/$USER_NAME/
+ADD ./files/.zshrc /home/$USER_NAME/
 
-  # start zsh
-  CMD [ "zsh" ]
+RUN chown -R $USER_NAME:$USER_NAME /home/$USER_NAME
+
+FROM builder
+
+# the user we're applying this too (otherwise it most likely install for root)
+USER $USER_NAME
+
+# terminal colors with xterm
+ENV TERM xterm
+# set the zsh theme
+ENV ZSH_THEME agnoster
+
+# run the installation script  
+RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
+
+# Install VIM Plug
+RUN curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+# Install the plugins so vim is ready to roll!
+RUN vim +PlugInstall +qall > /dev/null
+
+RUN cd ~/.vim/plugged/YouCompleteMe && \
+    git submodule update --init --recursive && \
+    ./install.py --all
+
+# start zsh
+CMD [ "zsh" ]
 
