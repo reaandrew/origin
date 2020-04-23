@@ -8,23 +8,36 @@ WORKDIR /root
 
 # Install Vim
 RUN apt-get remove -y vim vim-runtime gvim vim-tiny vim-common vim-gui-common || :
+
 RUN apt-get update -y && apt-get install --no-install-recommends -y \
-		libncurses5-dev \
-		libgnome2-dev \
-		libgnomeui-dev \
-		libgtk2.0-dev \
-		libatk1.0-dev \
-		libbonoboui2-dev \
-		libcairo2-dev \
-		libx11-dev \
-		libxpm-dev \
-		libxt-dev \
-		python-dev ruby-dev \
+  	libncurses5-dev \
+##	libgnome2-dev \
+##	libgnomeui-dev \
+##	libgtk2.0-dev \
+##	libatk1.0-dev \
+##	libbonoboui2-dev \
+##	libcairo2-dev \
+##	libx11-dev \
+##	libxpm-dev \
+##	libxt-dev \
+		python-dev \
+    ruby-dev \
     build-essential \
 		python3-dev \
     python3-pip \
     python3-setuptools \
-		git
+		git \
+    sudo \
+    cmake \
+    curl \
+    gnupg \
+    linuxbrew-wrapper \
+    locales \
+    zsh \
+    wget \
+    fonts-powerline \
+    openssh-client
+
 RUN git clone https://github.com/vim/vim
 
 WORKDIR /root/vim
@@ -41,7 +54,9 @@ RUN ./configure --with-features=huge \
   --enable-gui=gtk2 \
   --enable-cscope \
   --prefix=/usr
+
 RUN cd /root/vim && make VIMRUNTIMEDIR=/usr/share/vim/vim82
+
 RUN cd /root/vim && make install
 
 WORKDIR /root/
@@ -53,29 +68,17 @@ ENV USER_NAME $USER_NAME
 ENV USER_PASSWORD $USER_PASSWORD
 ENV CONTAINER_IMAGE_VER=v1.0.0
 
-RUN echo $USER_NAME
-RUN echo $USER_PASSWORD
-RUN echo $CONTAINER_IMAGE_VER
+RUN echo $USER_NAME && \
+    echo $USER_PASSWORD && \
+    echo $CONTAINER_IMAGE_VER
 
 # install the tooks i wish to use
-RUN apt-get update && \
-  apt-get install --no-install-recommends -y sudo \
-  cmake \
-  curl \
-  gnupg \
-  linuxbrew-wrapper \
-  locales \
-  zsh \
-  wget \
-  fonts-powerline \
-  # set up locale
-  && locale-gen en_US.UTF-8 \
+RUN locale-gen en_GB en_US en_GB.UTF-8 en_US.UTF-8 \
   # add a user (--disabled-password: the user won't be able to use the account until the password is set)
   && adduser --quiet --disabled-password --shell /bin/zsh --home /home/$USER_NAME --gecos "User" $USER_NAME \
   # update the password
   && echo "${USER_NAME}:${USER_PASSWORD}" | chpasswd && usermod -aG sudo $USER_NAME \
   && echo "${USER_NAME} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-
 
 # Install GOLANG
 RUN rm -rf /usr/local/go && \
@@ -84,8 +87,6 @@ RUN rm -rf /usr/local/go && \
   rm "go${GO_VERSION}.linux-amd64.tar.gz" && \
   ln -s /usr/local/go/bin/go /usr/bin/go
 
-RUN locale-gen en_GB en_US en_GB.UTF-8 en_US.UTF-8
-  
 ADD ./files/.vimrc /home/$USER_NAME/
 ADD ./files/.zshrc /home/$USER_NAME/
 
