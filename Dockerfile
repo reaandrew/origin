@@ -8,7 +8,7 @@ WORKDIR /root
 
 # Install Vim
 RUN apt-get remove -y vim vim-runtime gvim vim-tiny vim-common vim-gui-common || :
-RUN apt-get update -y && apt-get install -y \
+RUN apt-get update -y && apt-get install --no-install-recommends -y \
 		libncurses5-dev \
 		libgnome2-dev \
 		libgnomeui-dev \
@@ -20,7 +20,10 @@ RUN apt-get update -y && apt-get install -y \
 		libxpm-dev \
 		libxt-dev \
 		python-dev ruby-dev \
+    build-essential \
 		python3-dev \
+    python3-pip \
+    python3-setuptools \
 		git
 RUN git clone https://github.com/vim/vim
 
@@ -56,20 +59,15 @@ RUN echo $CONTAINER_IMAGE_VER
 
 # install the tooks i wish to use
 RUN apt-get update && \
-  apt-get install -y sudo \
+  apt-get install --no-install-recommends -y sudo \
   cmake \
   curl \
-  git-core \
   gnupg \
   linuxbrew-wrapper \
   locales \
   zsh \
   wget \
-  git \
   fonts-powerline \
-  build-essential \
-  python3-pip \
-  python3-dev \
   # set up locale
   && locale-gen en_US.UTF-8 \
   # add a user (--disabled-password: the user won't be able to use the account until the password is set)

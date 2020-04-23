@@ -6,6 +6,7 @@ IMAGE_NAME=origin
 build:
 	docker build -t reaandrew/origin ./
 
+
 .PHONY: publish
 publish:
 	echo ${GITHUB_TOKEN} | docker login docker.pkg.github.com -u reaandrew --password-stdin

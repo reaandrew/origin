@@ -1,20 +1,5 @@
-FROM ubuntu
+FROM docker.pkg.github.com/reaandrew/origin/origin:0.1.0
 
-RUN apt-get update -y && apt-get install -y curl gnupg zsh
+RUN sudo apt-get install -y python3-venv
 
-RUN echo 'export NVM_DIR="$HOME/.nvm" && \ 
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && \ 
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' > ~/.zshrc
-
-# Install Node.js
-RUN mkdir -p ~/.nvm && \
-    curl -s -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash || : && \
-    export NVM_DIR="$HOME/.nvm" && \ 
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && \ 
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" && \ 
-    nvm install node
-
-## Install Yarn
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
-    apt update && apt install --no-install-recommends yarn
+CMD ['zsh']
