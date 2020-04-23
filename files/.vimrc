@@ -1,8 +1,12 @@
+set rtp+=$POWERLINE_ROOT/powerline/bindings/vim/
+
 call plug#begin('~/.vim/plugged')
 
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
 Plug 'maxmellon/vim-jsx-pretty'
+Plug 'SirVer/ultisnips'
+Plug 'mlaursen/vim-react-snippets'
 
 " NERD tree will be loaded on the first invocation of NERDTreeToggle command
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
@@ -23,6 +27,7 @@ Plug 'janko/vim-test'
 Plug 'tpope/vim-dispatch'
 Plug 'neomake/neomake'
 Plug 'itchyny/lightline.vim'
+Plug 'prettier/vim-prettier', { 'do': 'yarn install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
 call plug#end()
 
@@ -65,4 +70,11 @@ highlight LineNr ctermfg=NONE ctermbg=NONE
 
 "Code Folding
 nnoremap <space> za
+
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+
+set backspace=indent,eol,start
+  
+let g:airline_powerline_fonts = 1
 
