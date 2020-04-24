@@ -2,11 +2,18 @@ set rtp+=$POWERLINE_ROOT/powerline/bindings/vim/
 
 call plug#begin('~/.vim/plugged')
 
+" JAVASCRIPT
+"
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
 Plug 'maxmellon/vim-jsx-pretty'
-Plug 'SirVer/ultisnips'
 Plug 'mlaursen/vim-react-snippets'
+
+" GOLANG
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
+" PYTHON
+Plug 'honza/vim-snippets'
 
 " NERD tree will be loaded on the first invocation of NERDTreeToggle command
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
@@ -27,6 +34,7 @@ Plug 'janko/vim-test'
 Plug 'tpope/vim-dispatch'
 Plug 'neomake/neomake'
 Plug 'itchyny/lightline.vim'
+Plug 'SirVer/ultisnips'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
 call plug#end()
@@ -78,3 +86,12 @@ set backspace=indent,eol,start
   
 let g:airline_powerline_fonts = 1
 
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
