@@ -11,6 +11,7 @@ Plug 'mlaursen/vim-react-snippets'
 
 " GOLANG
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'godoctor/godoctor.vim', { 'do': ':GoDoctorInstall' }
 
 " PYTHON
 Plug 'honza/vim-snippets'
@@ -18,6 +19,7 @@ Plug 'honza/vim-snippets'
 " NERD tree will be loaded on the first invocation of NERDTreeToggle command
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 
+Plug 'janko/vim-test'
 Plug 'Valloric/YouCompleteMe'
 Plug 'nanotech/jellybeans.vim'
 Plug 'vim-syntastic/syntastic'
@@ -95,3 +97,11 @@ let g:SuperTabDefaultCompletionType = '<C-n>'
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
+" Testing
+" these "Ctrl mappings" work well when Caps Lock is mapped to Ctrl
+nmap <silent> t<C-n> :TestNearest<CR>
+nmap <silent> t<C-f> :TestFile<CR>
+nmap <silent> t<C-s> :TestSuite<CR>
+nmap <silent> t<C-l> :TestLast<CR>
+nmap <silent> t<C-g> :TestVisit<CR>
