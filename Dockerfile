@@ -9,7 +9,7 @@ WORKDIR /root
 # Install Vim
 RUN apt-get remove -y vim vim-runtime gvim vim-tiny vim-common vim-gui-common || :
 
-RUN apt-get update -y && apt-get install --no-install-recommends -y \
+RUN apt-get update -y && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
   	libncurses5-dev \
 ##	libgnome2-dev \
 ##	libgnomeui-dev \
@@ -112,7 +112,7 @@ RUN mkdir -p ~/.nvm && \
 RUN curl -sSO https://dl.yarnpkg.com/debian/pubkey.gpg && \
     sudo apt-key add pubkey.gpg && \
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list && \
-    sudo apt update && sudo apt install --no-install-recommends yarn
+    sudo apt update && DEBIAN_FRONTEND=noninteractive sudo apt install --no-install-recommends yarn
 
 
 # terminal colors with xterm
