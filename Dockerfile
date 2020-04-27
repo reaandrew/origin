@@ -150,6 +150,9 @@ RUN git clone https://github.com/powerline/fonts.git --depth=1 && \
 
 RUN pip3 install powerline-status
 
+RUN mkdir -p ~/tools/bin
+RUN mkdir -p ~/tools/bashtop && git clone https://github.com/aristocratos/bashtop.git ~/tools/bashtop && ln -s ~/tools/bashtop/bashtop ~/tools/bin/bashtop
+
 # start zsh
 CMD [ "zsh" ]
 
