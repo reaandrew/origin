@@ -31,7 +31,6 @@ RUN apt-get update -y && apt-get install --no-install-recommends -y \
     cmake \
     curl \
     gnupg \
-    linuxbrew-wrapper \
     locales \
     zsh \
     wget \
