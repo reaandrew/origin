@@ -16,6 +16,9 @@ Plug 'godoctor/godoctor.vim', { 'do': ':GoDoctorInstall' }
 " PYTHON
 Plug 'honza/vim-snippets'
 
+" RUST
+Plug 'rust-lang/rust.vim'
+
 " NERD tree will be loaded on the first invocation of NERDTreeToggle command
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 
