@@ -9,7 +9,9 @@ WORKDIR /root
 # Install Vim
 RUN apt-get remove -y vim vim-runtime gvim vim-tiny vim-common vim-gui-common || :
 
-RUN apt-get update -y && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
+RUN apt-get update -y && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    libgnome2-dev \
+    libgnomeui-dev \
   	libncurses5-dev \
     libgtk2.0-dev \
     libatk1.0-dev \
