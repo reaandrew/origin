@@ -10,7 +10,6 @@ WORKDIR /root
 RUN apt-get remove -y vim vim-runtime gvim vim-tiny vim-common vim-gui-common || :
 
 RUN apt-get update -y && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    libgnome2-dev \
     libgnomeui-dev \
   	libncurses5-dev \
     libgtk2.0-dev \
@@ -40,7 +39,8 @@ RUN git clone https://github.com/vim/vim
 
 WORKDIR /root/vim
 
-RUN ./configure --with-features=huge \
+RUN ./configure \
+  --with-features=huge \
   --enable-multibyte \
   --enable-rubyinterp \
   --enable-pythoninterp \
