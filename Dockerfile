@@ -10,7 +10,6 @@ WORKDIR /root
 RUN apt-get remove -y vim vim-runtime gvim vim-tiny vim-common vim-gui-common || :
 
 RUN apt-get update -y && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-    libgnomeui-dev \
   	libncurses5-dev \
     libgtk2.0-dev \
     libatk1.0-dev \
