@@ -108,3 +108,16 @@ nmap <silent> t<C-f> :TestFile<CR>
 nmap <silent> t<C-s> :TestSuite<CR>
 nmap <silent> t<C-l> :TestLast<CR>
 nmap <silent> t<C-g> :TestVisit<CR>
+
+" NERDTree
+map <C-d> :NERDTreeToggle<CR>
+
+" Tabs
+"
+" - To create a new tab
+nnoremap <S-t> :tabnew<CR>
+inoremap <S-t> <Esc>:tabnew<CR>
+
+" - Tab Navigation
+nnoremap <S-h> gT
+nnoremap <S-l> gt

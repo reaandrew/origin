@@ -12,7 +12,9 @@ ZSH_THEME="robbyrussell"
 
 plugins=(git ssh-agent)
 
+# Sources
 source $ZSH/oh-my-zsh.sh
+source $HOME/.cargo/env
 
 # User configuration
 
@@ -42,7 +44,6 @@ alias dynamodb_local='docker run -p 8000:8000 amazon/dynamodb-local'
 function pip_install(){
   pip install $1 && pip freeze > requirements.txt
 }
-#grep -Ev "FileLength|JavadocParagraph|LineLength|PackageName|SummaryJavadoc|MemberName|EmptyLineSeparator|CustomImportOrder|ParameterName|MissingJavadocMethod|MethodLength|AnonInnerLength|NeedBraces|WhitespaceAround|AbbreviationAsWordInName|VariableDeclarationUsageDistance|MultipleVariableDeclarations|OperatorWrap|SingleLineJavadoc|OverloadMethodsDeclarationOrder|ArrayTypeStyle|MissingSwitchDefault|JavadocTagContinuationIndentation|RightCurlyAlone|LocalVariableName|MethodName|ParentPad|JavadocMethod|AnnotationLocationMostCases|AtclauseOrder|AvoidEscapedUnicodeCharacters|CommentsIndentation|EmptyBlock|FallThrough|GenericWhitespace|InvalidJavadocPosition|LeftCurly|MethodParamPad|NoWhitespaceBefore|ParenPad|RightCurlySame|SeparatorWrapComma|SeparatorWrapDot|TypeName" | grep -Eo "\[[A-Za-z]+\]$" | sort | uniq
 
 function git_delete_tag(){
   git push --delete origin $1

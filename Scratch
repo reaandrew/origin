@@ -1,5 +1,15 @@
 FROM docker.pkg.github.com/reaandrew/origin/origin:0.1.0
 
-RUN sudo apt-get install -y python3-venv
+ARG USER_NAME="docker"
+
+RUN sudo apt-get install -y \
+  python3-venv \
+  tmux
+
+# Install rust
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+
+ADD ./files/.vimrc /home/$USER_NAME/
+ADD ./files/.zshrc /home/$USER_NAME/
 
 CMD ['zsh']

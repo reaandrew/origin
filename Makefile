@@ -6,6 +6,10 @@ IMAGE_NAME=origin
 build:
 	docker build -t reaandrew/origin ./
 
+.PHONY: build_scratch
+build_scratch:
+	docker build -t reaandrew/origin_scratch -f ./Scratch .
+
 
 .PHONY: publish
 publish:
